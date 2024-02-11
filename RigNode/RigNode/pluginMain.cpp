@@ -4,8 +4,16 @@
 
 MObject DepNode::parentMatrix = MObject();
 
-MStatus DepNode::compute() {
-	MGlobal::displayInfo("Hello i am a node");
+MStatus DepNode::compute(const MPlug& plug, MDataBlock& block) {
+	MGlobal::displayInfo("computecalled");
+	MObject current = plug.asMObject();
+	if (current == parentMatrix)
+	{
+		MGlobal::displayInfo("current plug is for parent");
+		MDataHandle parentMatrix = block.inputValue(plug);
+		MGlobal::displayInfo("Got data handle for plug");
+		MMatrix matrix = parentMatrix.asMatrix();
+	};
 	return MS::kSuccess;
 };
 
@@ -27,7 +35,7 @@ MStatus DepNode::initialize()
 	MGlobal::displayInfo("Matrix attr pointer made calling to create attributes");
 
 
-	MObject parentMatrixAttr = matrixAttribute.create("ParentMatrix", "pm", MFnMatrixAttribute::kFloat);
+	MObject parentMatrixAttr = matrixAttribute.create("ParentMatrix", "pm", MFnMatrixAttribute::kDouble);
 	matrixAttribute.setWritable(1);
 	matrixAttribute.setReadable(0);
 	matrixAttribute.setStorable(1);
@@ -37,7 +45,7 @@ MStatus DepNode::initialize()
 	addAttribute(parentMatrixAttr);
 
 
-	MObject childMatrixAttr = matrixAttribute.create("ChildMatrix", "cm", MFnMatrixAttribute::kFloat);
+	MObject childMatrixAttr = matrixAttribute.create("ChildMatrix", "cm", MFnMatrixAttribute::kDouble);
 	matrixAttribute.setWritable(1);
 	matrixAttribute.setReadable(0);
 	matrixAttribute.setStorable(1);
@@ -47,7 +55,7 @@ MStatus DepNode::initialize()
 	addAttribute(childMatrixAttr);
 
 
-	MObject resultMatrixAttr = matrixAttribute.create("ResultMatrix", "rm", MFnMatrixAttribute::kFloat);
+	MObject resultMatrixAttr = matrixAttribute.create("ResultMatrix", "rm", MFnMatrixAttribute::kDouble);
 	matrixAttribute.setWritable(1);
 	matrixAttribute.setReadable(1);
 	matrixAttribute.setStorable(0);

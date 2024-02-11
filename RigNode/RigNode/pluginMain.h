@@ -5,6 +5,10 @@
 #include <maya/MFnAttribute.h>
 #include <maya/MPxNode.h>
 #include <maya/MFnMatrixAttribute.h>
+#include <maya/MMatrix.h>
+#include <maya/MDataHandle.h>
+#include <maya/MDataBlock.h>
+#include <maya/MPlug.h>
 
 
 
@@ -25,18 +29,9 @@ public:
 
 	static void* creator();
 
-	static MObject initializeMatrixAttr(
-		MFnMatrixAttribute* matrixAttribute,
-		MString fullName, 
-		MString briefName, 
-		MFnMatrixAttribute::Type matrixType,
-		bool isWritable=true,
-		bool isReadable=false
-	);
-
 	static MStatus initialize();
 
-	MStatus compute();
+	MStatus compute(const MPlug& plug, MDataBlock& block);
 
 private:
 
