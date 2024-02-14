@@ -2,18 +2,46 @@
 
 
 
-MObject DepNode::parentMatrix = MObject();
 
-MStatus DepNode::compute(const MPlug& plug, MDataBlock& block) {
-	MGlobal::displayInfo("computecalled");
-	MObject current = plug.asMObject();
-	if (current == parentMatrix)
+MStatus DepNode::compute(const MPlug & plug, MDataBlock & dataBlock) {
+	//MObject current = plug.asMObject();
+
+	/*if (plug == parentMatrix)
 	{
+		MGlobal::displayInfo("computecalled");
 		MGlobal::displayInfo("current plug is for parent");
-		MDataHandle parentMatrix = block.inputValue(plug);
+		MDataHandle parentMatrix = block.inputValue(DepNode::parentMatrix);
 		MGlobal::displayInfo("Got data handle for plug");
 		MMatrix matrix = parentMatrix.asMatrix();
-	};
+	};*/
+
+	if (typeid(plug).name() == typeid(parentMatrix).name())
+	{
+		cout << "plug type is an object";
+		MGlobal::displayInfo("..plug type is an object");
+	}
+	MGlobal::displayInfo("Got data handle for plug");
+	cout << "test";
+
+	MDataHandle parentMatrixHandle = dataBlock.inputValue(parentMatrix);
+	MGlobal::displayInfo("got handle");
+	cout << "getting matri";
+
+	MMatrix parentMatrix = parentMatrixHandle.asMatrix();
+	MGlobal::displayInfo("got matrix");
+
+	MDataHandle childMatrixHandle = dataBlock.inputValue(childMatrix);
+	MMatrix childMatrix = childMatrixHandle.asMatrix();
+
+	MDataHandle resultMatrixHandle = dataBlock.outputValue(resultMatrix);
+
+	MMatrix resultMatrix = parentMatrix;
+	resultMatrix.operator*=(childMatrix);
+
+	resultMatrixHandle.setMMatrix(resultMatrix);
+
+	dataBlock.setClean(plug);
+
 	return MS::kSuccess;
 };
 
@@ -35,39 +63,39 @@ MStatus DepNode::initialize()
 	MGlobal::displayInfo("Matrix attr pointer made calling to create attributes");
 
 
-	MObject parentMatrixAttr = matrixAttribute.create("ParentMatrix", "pm", MFnMatrixAttribute::kDouble);
+	MObject parentMatrix = matrixAttribute.create("ParentMatrix", "pm", MFnMatrixAttribute::kDouble);
 	matrixAttribute.setWritable(1);
 	matrixAttribute.setReadable(0);
 	matrixAttribute.setStorable(1);
 	matrixAttribute.setConnectable(1);
 	matrixAttribute.setChannelBox(1);
 	matrixAttribute.setHidden(0);
-	addAttribute(parentMatrixAttr);
+	addAttribute(parentMatrix);
 
 
-	MObject childMatrixAttr = matrixAttribute.create("ChildMatrix", "cm", MFnMatrixAttribute::kDouble);
+	MObject childMatrix = matrixAttribute.create("ChildMatrix", "cm", MFnMatrixAttribute::kDouble);
 	matrixAttribute.setWritable(1);
 	matrixAttribute.setReadable(0);
 	matrixAttribute.setStorable(1);
 	matrixAttribute.setConnectable(1);
 	matrixAttribute.setChannelBox(1);
 	matrixAttribute.setHidden(0);
-	addAttribute(childMatrixAttr);
+	addAttribute(childMatrix);
 
 
-	MObject resultMatrixAttr = matrixAttribute.create("ResultMatrix", "rm", MFnMatrixAttribute::kDouble);
+	MObject resultMatrix = matrixAttribute.create("ResultMatrix", "rm", MFnMatrixAttribute::kDouble);
 	matrixAttribute.setWritable(1);
 	matrixAttribute.setReadable(1);
 	matrixAttribute.setStorable(0);
 	matrixAttribute.setConnectable(1);
 	matrixAttribute.setChannelBox(1);
 	matrixAttribute.setHidden(0);
-	addAttribute(resultMatrixAttr);
+	addAttribute(resultMatrix);
 
 	MGlobal::displayInfo("All attributes made");
 
-	attributeAffects(parentMatrixAttr, resultMatrixAttr);
-	attributeAffects(childMatrixAttr, resultMatrixAttr);
+	attributeAffects(parentMatrix, resultMatrix);
+	attributeAffects(childMatrix, resultMatrix);
 
 	MGlobal::displayInfo("Attr pointer released");
 

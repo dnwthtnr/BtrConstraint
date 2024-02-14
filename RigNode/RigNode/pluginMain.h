@@ -9,6 +9,7 @@
 #include <maya/MDataHandle.h>
 #include <maya/MDataBlock.h>
 #include <maya/MPlug.h>
+#include <maya/MObject.h>
 
 
 
@@ -23,9 +24,9 @@ public:
 	using MPxNode::MPxNode;
 
 
-	static MObject parentMatrix;
-	static MObject childMatrix;
-	static MObject resultMatrix;
+	MObject parentMatrix;
+	MObject childMatrix;
+	MObject resultMatrix;
 
 	static void* creator();
 
