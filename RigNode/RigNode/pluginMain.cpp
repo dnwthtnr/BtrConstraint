@@ -3,7 +3,7 @@
 
 
 
-MStatus DepNode::compute(const MPlug & plug, MDataBlock & dataBlock) {
+MStatus DepNode::compute(const MPlug &plug, MDataBlock &dataBlock) {
 	//MObject current = plug.asMObject();
 
 	/*if (plug == parentMatrix)
@@ -15,30 +15,50 @@ MStatus DepNode::compute(const MPlug & plug, MDataBlock & dataBlock) {
 		MMatrix matrix = parentMatrix.asMatrix();
 	};*/
 
-	if (typeid(plug).name() == typeid(parentMatrix).name())
+	/*if (typeid(plug).name() == typeid(parentMatrix).name())
 	{
 		cout << "plug type is an object";
 		MGlobal::displayInfo("..plug type is an object");
-	}
+	}*/
 	MGlobal::displayInfo("Got data handle for plug");
-	cout << "test";
+	MGlobal::displayInfo(typeid(plug).name());
 
-	MDataHandle parentMatrixHandle = dataBlock.inputValue(parentMatrix);
+
+	try
+	{
+	//MGlobal::displayInfo(parentMatrixHandle.type());
+	MDataHandle parentMatrixHandle = dataBlock.inputValue(parentMatrixAttr);
+	MFloatMatrix &parentMatrix = parentMatrixHandle.asFloatMatrix();
+
 	MGlobal::displayInfo("got handle");
-	cout << "getting matri";
 
-	MMatrix parentMatrix = parentMatrixHandle.asMatrix();
+	MDataHandle childMatrixHandle = dataBlock.inputValue(childMatrixAttr);
+	MFloatMatrix &childMatrix = childMatrixHandle.asFloatMatrix();
+
 	MGlobal::displayInfo("got matrix");
 
-	MDataHandle childMatrixHandle = dataBlock.inputValue(childMatrix);
-	MMatrix childMatrix = childMatrixHandle.asMatrix();
 
-	MDataHandle resultMatrixHandle = dataBlock.outputValue(resultMatrix);
+	MDataHandle resultMatrixHandle = dataBlock.outputValue(resultMatrixAttr);
+	MGlobal::displayInfo("got result matrix");
 
-	MMatrix resultMatrix = parentMatrix;
-	resultMatrix.operator*=(childMatrix);
+	//MFloatMatrix &resultMatrix = parentMatrix;
+	//resultMatrix.operator*=(childMatrix);
 
-	resultMatrixHandle.setMMatrix(resultMatrix);
+
+	printMatrix(parentMatrix);
+
+	
+	resultMatrixHandle.setMFloatMatrix(parentMatrix);
+
+	MGlobal::displayInfo("set result x");
+	}
+	catch (const std::exception& e)
+	{
+		MGlobal::displayError(e.what());
+		return MS::kFailure;
+	};
+
+	
 
 	dataBlock.setClean(plug);
 
@@ -63,44 +83,63 @@ MStatus DepNode::initialize()
 	MGlobal::displayInfo("Matrix attr pointer made calling to create attributes");
 
 
-	MObject parentMatrix = matrixAttribute.create("ParentMatrix", "pm", MFnMatrixAttribute::kDouble);
+	MObject parentMatrixAttr = matrixAttribute.create("ParentMatrix", "pm", MFnMatrixAttribute::kFloat);
 	matrixAttribute.setWritable(1);
 	matrixAttribute.setReadable(0);
 	matrixAttribute.setStorable(1);
 	matrixAttribute.setConnectable(1);
 	matrixAttribute.setChannelBox(1);
 	matrixAttribute.setHidden(0);
-	addAttribute(parentMatrix);
+	addAttribute(parentMatrixAttr);
 
 
-	MObject childMatrix = matrixAttribute.create("ChildMatrix", "cm", MFnMatrixAttribute::kDouble);
+	MObject childMatrixAttr = matrixAttribute.create("ChildMatrix", "cm", MFnMatrixAttribute::kFloat);
 	matrixAttribute.setWritable(1);
 	matrixAttribute.setReadable(0);
 	matrixAttribute.setStorable(1);
 	matrixAttribute.setConnectable(1);
 	matrixAttribute.setChannelBox(1);
 	matrixAttribute.setHidden(0);
-	addAttribute(childMatrix);
+	addAttribute(childMatrixAttr);
 
 
-	MObject resultMatrix = matrixAttribute.create("ResultMatrix", "rm", MFnMatrixAttribute::kDouble);
+	MObject resultMatrixAttr = matrixAttribute.create("ResultMatrix", "rm", MFnMatrixAttribute::kFloat);
 	matrixAttribute.setWritable(1);
 	matrixAttribute.setReadable(1);
 	matrixAttribute.setStorable(0);
 	matrixAttribute.setConnectable(1);
 	matrixAttribute.setChannelBox(1);
 	matrixAttribute.setHidden(0);
-	addAttribute(resultMatrix);
+	addAttribute(resultMatrixAttr);
 
 	MGlobal::displayInfo("All attributes made");
 
-	attributeAffects(parentMatrix, resultMatrix);
-	attributeAffects(childMatrix, resultMatrix);
+	attributeAffects(parentMatrixAttr, resultMatrixAttr);
+	attributeAffects(childMatrixAttr, resultMatrixAttr);
 
 	MGlobal::displayInfo("Attr pointer released");
 
 	return MS::kSuccess;
 };
+
+
+void DepNode::printMatrix(MFloatMatrix& matrix) {
+
+	int row, column;
+	for (row=0; row < 4; row++){
+		MGlobal::displayInfo("row");
+		MGlobal::displayInfo( MString("Row:").operator+=(row) );
+
+		for (column = 0; column < 4; column++) {
+			MGlobal::displayInfo("col");
+			const float value = matrix(row, column);
+			MGlobal::displayInfo( MString("").operator+=(value) );
+		}
+	}
+
+
+}
+
 
 //MObject DepNode::initializeMatrixAttr(MFnMatrixAttribute matrixAttribute, MString fullName, MString briefName, MFnMatrixAttribute::Type matrixType, bool isWritable, bool isReadable)
 //{

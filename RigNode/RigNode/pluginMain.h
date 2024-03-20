@@ -5,11 +5,16 @@
 #include <maya/MFnAttribute.h>
 #include <maya/MPxNode.h>
 #include <maya/MFnMatrixAttribute.h>
-#include <maya/MMatrix.h>
+#include <maya/MFloatMatrix.h>
 #include <maya/MDataHandle.h>
 #include <maya/MDataBlock.h>
 #include <maya/MPlug.h>
 #include <maya/MObject.h>
+
+#include <string>
+#include <format>
+#include <stdio.h>
+#include <iostream>
 
 
 
@@ -24,13 +29,15 @@ public:
 	using MPxNode::MPxNode;
 
 
-	MObject parentMatrix;
-	MObject childMatrix;
-	MObject resultMatrix;
+	MObject parentMatrixAttr;
+	MObject childMatrixAttr;
+	MObject resultMatrixAttr;
 
 	static void* creator();
 
 	static MStatus initialize();
+
+	static void printMatrix(MFloatMatrix& matrix);
 
 	MStatus compute(const MPlug& plug, MDataBlock& block);
 
