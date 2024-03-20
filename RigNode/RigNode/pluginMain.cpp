@@ -27,28 +27,29 @@ MStatus DepNode::compute(const MPlug &plug, MDataBlock &dataBlock) {
 	try
 	{
 	//MGlobal::displayInfo(parentMatrixHandle.type());
-	MDataHandle parentMatrixHandle = dataBlock.inputValue(parentMatrixAttr);
-	MFloatMatrix &parentMatrix = parentMatrixHandle.asFloatMatrix();
+	MFloatMatrix &parentMatrix = dataBlock.inputValue(parentMatrixAttr).asFloatMatrix();
+	//printMatrix(parentMatrix);
 
 	MGlobal::displayInfo("got handle");
 
-	MDataHandle childMatrixHandle = dataBlock.inputValue(childMatrixAttr);
-	MFloatMatrix &childMatrix = childMatrixHandle.asFloatMatrix();
+	MFloatMatrix &childMatrix = dataBlock.inputValue(childMatrixAttr).asFloatMatrix();
+	//printMatrix(childMatrix);
 
 	MGlobal::displayInfo("got matrix");
 
-
-	MDataHandle resultMatrixHandle = dataBlock.outputValue(resultMatrixAttr);
-	MGlobal::displayInfo("got result matrix");
-
 	//MFloatMatrix &resultMatrix = parentMatrix;
-	//resultMatrix.operator*=(childMatrix);
+	MFloatMatrix resultMatrix = parentMatrix + childMatrix; // causing error
 
 
-	printMatrix(parentMatrix);
+	MDataHandle outMatrixHandle = dataBlock.outputValue(resultMatrixAttr);
+	MFloatMatrix & outMatrix = outMatrixHandle.asFloatMatrix();
 
 	
-	resultMatrixHandle.setMFloatMatrix(parentMatrix);
+	MGlobal::displayInfo("got result matrix");
+
+	outMatrix = resultMatrix;
+	
+	//resultMatrixHandle.setMFloatMatrix(parentMatrix);
 
 	MGlobal::displayInfo("set result x");
 	}
@@ -58,7 +59,7 @@ MStatus DepNode::compute(const MPlug &plug, MDataBlock &dataBlock) {
 		return MS::kFailure;
 	};
 
-	
+	MGlobal::displayInfo("Escaped try except");
 
 	dataBlock.setClean(plug);
 
@@ -83,7 +84,7 @@ MStatus DepNode::initialize()
 	MGlobal::displayInfo("Matrix attr pointer made calling to create attributes");
 
 
-	MObject parentMatrixAttr = matrixAttribute.create("ParentMatrix", "pm", MFnMatrixAttribute::kFloat);
+	MObject parentMatrixAttr = matrixAttribute.create("ParentMatrix", "pm", MFnMatrixAttribute::kDouble);
 	matrixAttribute.setWritable(1);
 	matrixAttribute.setReadable(0);
 	matrixAttribute.setStorable(1);
@@ -93,7 +94,7 @@ MStatus DepNode::initialize()
 	addAttribute(parentMatrixAttr);
 
 
-	MObject childMatrixAttr = matrixAttribute.create("ChildMatrix", "cm", MFnMatrixAttribute::kFloat);
+	MObject childMatrixAttr = matrixAttribute.create("ChildMatrix", "cm", MFnMatrixAttribute::kDouble);
 	matrixAttribute.setWritable(1);
 	matrixAttribute.setReadable(0);
 	matrixAttribute.setStorable(1);
@@ -103,7 +104,7 @@ MStatus DepNode::initialize()
 	addAttribute(childMatrixAttr);
 
 
-	MObject resultMatrixAttr = matrixAttribute.create("ResultMatrix", "rm", MFnMatrixAttribute::kFloat);
+	MObject resultMatrixAttr = matrixAttribute.create("ResultMatrix", "rm", MFnMatrixAttribute::kDouble);
 	matrixAttribute.setWritable(1);
 	matrixAttribute.setReadable(1);
 	matrixAttribute.setStorable(0);
@@ -132,8 +133,13 @@ void DepNode::printMatrix(MFloatMatrix& matrix) {
 
 		for (column = 0; column < 4; column++) {
 			MGlobal::displayInfo("col");
-			const float value = matrix(row, column);
-			MGlobal::displayInfo( MString("").operator+=(value) );
+
+			// This line causes an unauthorized read error 
+			//const double value = matrix(row, column);
+
+			MGlobal::displayInfo("got row/col");
+
+			//MGlobal::displayInfo( MString("").operator+=(value) );
 		}
 	}
 

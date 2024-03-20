@@ -1,3 +1,4 @@
 ﻿  pluginMain.cpp
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\include\format(42): warning STL4038: The contents of <format> are available only with C++20 or later.
+     Creating library D:\__packages\_GitHub\BtrConstraint\RigNode\x64\Debug\RigNode.lib and object D:\__packages\_GitHub\BtrConstraint\RigNode\x64\Debug\RigNode.exp
   RigNode.vcxproj -> D:\__packages\_GitHub\BtrConstraint\RigNode\x64\Debug\RigNode.mll

@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "D:\\__packages\\_GitHub\\BtrConstraint\\RigNode\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F3491E08-9017-4621-B58D-A98FC124072E}|RigNode\\RigNode.vcxproj|D:\\__packages\\_GitHub\\BtrConstraint\\RigNode\\RigNode\\pluginMain.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{F3491E08-9017-4621-B58D-A98FC124072E}|RigNode\\RigNode.vcxproj|solutionrelative:RigNode\\pluginMain.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{F3491E08-9017-4621-B58D-A98FC124072E}|RigNode\\RigNode.vcxproj|D:\\__packages\\_GitHub\\BtrConstraint\\RigNode\\RigNode\\pluginMain.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{F3491E08-9017-4621-B58D-A98FC124072E}|RigNode\\RigNode.vcxproj|solutionrelative:RigNode\\pluginMain.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F3491E08-9017-4621-B58D-A98FC124072E}|RigNode\\RigNode.vcxproj|D:\\__packages\\_GitHub\\BtrConstraint\\RigNode\\RigNode\\pluginMain.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{F3491E08-9017-4621-B58D-A98FC124072E}|RigNode\\RigNode.vcxproj|solutionrelative:RigNode\\pluginMain.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Tanner - Work\\Desktop\\Source\\TestRig\\Public\\Dialog.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
@@ -25,13 +25,13 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "pluginMain.h",
               "DocumentMoniker": "D:\\__packages\\_GitHub\\BtrConstraint\\RigNode\\RigNode\\pluginMain.h",
               "RelativeDocumentMoniker": "RigNode\\pluginMain.h",
               "ToolTip": "D:\\__packages\\_GitHub\\BtrConstraint\\RigNode\\RigNode\\pluginMain.h",
               "RelativeToolTip": "RigNode\\pluginMain.h",
-              "ViewState": "AQIAAAMAAAAAAAAAAAAAABQAAAAeAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAB0AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-03-20T07:48:56.358Z",
               "EditorCaption": ""
@@ -57,13 +57,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "pluginMain.cpp",
               "DocumentMoniker": "D:\\__packages\\_GitHub\\BtrConstraint\\RigNode\\RigNode\\pluginMain.cpp",
               "RelativeDocumentMoniker": "RigNode\\pluginMain.cpp",
               "ToolTip": "D:\\__packages\\_GitHub\\BtrConstraint\\RigNode\\RigNode\\pluginMain.cpp",
               "RelativeToolTip": "RigNode\\pluginMain.cpp",
-              "ViewState": "AQIAADMAAAAAAAAAAAAAAD8AAAAAAAAA",
+              "ViewState": "AQIAABIAAAAAAAAAAAAowCgAAABJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-03-20T07:48:56.389Z",
               "EditorCaption": ""
